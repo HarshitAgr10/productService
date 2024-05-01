@@ -25,7 +25,7 @@ public class Category extends BaseModel {
 
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
     @JsonIgnore
     private List<Product> products;

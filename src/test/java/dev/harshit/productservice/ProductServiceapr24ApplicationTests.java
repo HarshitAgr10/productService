@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -28,7 +29,7 @@ class ProductServiceapr24ApplicationTests {
     @Test
     public void testingQuery() {
         Product product = productRepository.
-                getProductWithASpecificTitleAndId("electronics", 4l);
+                getProductWithASpecificTitleAndId("electronics", 1l);
 
         System.out.println(product.getTitle());
     }
@@ -36,7 +37,7 @@ class ProductServiceapr24ApplicationTests {
     @Test
     public void testingQuery2() {
         ProductWithTitleAndId product = productRepository.
-                getProductWithASpecificTitleAndId2("iPhone13", 4L);
+                getProductWithASpecificTitleAndId2("iPhone12", 1L);
 
         System.out.println(product.getId());
         System.out.println(product.getTitle());
@@ -63,11 +64,22 @@ class ProductServiceapr24ApplicationTests {
 
     @Test
     public void testingFetchTypes3() {
-        Optional<Category> category = categoryRepository.findById(4L);
+        Optional<Category> category = categoryRepository.findById(1L);
 
         System.out.println(category.get().getTitle());
     }
 
+    @Test
+    @Transactional
+    public void nplus1problem() {
+        // Get all categories and for each category, get the product and print title of each product
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            for (Product product : category.getProducts()) {
+                System.out.println(product.getTitle());
+            }
+        }
+    }
 }
 
 // Alternative way to test Queries written using HQL
@@ -80,3 +92,6 @@ class ProductServiceapr24ApplicationTests {
 
 // @Test is used to mark a method as a Test method. When tests are run, JUnit will look for methods annotated
 // with @Test and execute them to verify that code is behaving as expected.
+
+// @Transactional ensures data integrity by allowing a group of operations to be executed as a single unit,
+// either all succeeding or all failing.
