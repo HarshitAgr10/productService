@@ -3,9 +3,12 @@ package dev.harshit.productservice.repositories;
 import dev.harshit.productservice.models.Category;
 import dev.harshit.productservice.models.Product;
 import dev.harshit.productservice.repositories.projections.ProductWithTitleAndId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 
 import java.util.List;
 
@@ -35,6 +38,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategory(Category category);
 
     void deleteById(Long id);
+
+    Page<Product> findByTitleContaining(String title, Pageable pageable);
 }
 
 
@@ -47,3 +52,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 // @Query allows to define custom JPQL(Java Persistence Query Language) or native SQL queries directly in repository interface.
 // @Param is used to specify named parameters in JPQL or native SQL queries defined with @Query annotation.
 // It allows to assign a name to method parameters used in custom query methods.
+
+// Pageable is an interface used in conjunction with Page<> for handling pagination in Spring Data.
+// It represents information required to request a specific page of data, such as page no., page size, sorting criteria etc.
