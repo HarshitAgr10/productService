@@ -9,6 +9,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class SearchService {
@@ -22,6 +25,11 @@ public class SearchService {
     public Page<Product> search(String query, int pageNumber, int pageSize) {
         Sort sort = Sort.by("title").descending()
                 .and(Sort.by("price").ascending());
+
+        // List<String> sortValues = new ArrayList<>();
+        // for (String sortValue : sortValues) {
+        //     sort = Sort.by(sortValue).ascending();
+        // }
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         return productRepository.findByTitleContaining(query, pageable);
