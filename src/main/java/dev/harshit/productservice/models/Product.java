@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Product extends BaseModel {
+public class Product extends BaseModel implements Serializable {
 
     // private Long id;
 
@@ -44,3 +46,8 @@ public class Product extends BaseModel {
 
 // CascadeType.PERSIST setting specifies that when an operation to persist entity is performed on owning
 // entity, same operation should be cascaded to its associated entities, causing them to be persisted as well.
+
+// Serializable is an interface that marks class as serializable, meaning its objects can be converted into a
+// stream of bytes that can be saved to a file or sent over a network.
+// Serialization is process of converting an object into byte stream, while deserialization is process of
+// reconstructing an object from that byte stream.

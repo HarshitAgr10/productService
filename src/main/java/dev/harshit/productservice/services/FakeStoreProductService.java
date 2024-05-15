@@ -4,6 +4,7 @@ import dev.harshit.productservice.dtos.FakeStoreProductDto;
 import dev.harshit.productservice.dtos.GetCategoryDto;
 import dev.harshit.productservice.models.Category;
 import dev.harshit.productservice.models.Product;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,12 @@ import java.util.List;
 public class FakeStoreProductService implements ProductService {
 
     private RestTemplate restTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public FakeStoreProductService(RestTemplate restTemplate) {
+    public FakeStoreProductService(RestTemplate restTemplate,
+                                   RedisTemplate<String, Object> redisTemplate) {
         this.restTemplate = restTemplate;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
@@ -29,6 +33,12 @@ public class FakeStoreProductService implements ProductService {
 //        FakeStoreProductDto fakeStoreProductDto = restTemplate
 //                .getForObject("https://fakestoreapi.com/products/" + id,
 //                        FakeStoreProductDto.class);
+
+        Product productFromCache = (Product) redisTemplate.opsForValue().get(String.valueOf(id));
+        // If productFromCache != null( already present in redis), return the product, no need to call 3rd party API below
+        if (productFromCache != null) {
+            return productFromCache;
+        }
 
         // Using ResponseEntity instead of above part to get entire response like body, header and status code
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.
@@ -46,6 +56,9 @@ public class FakeStoreProductService implements ProductService {
         Category category = new Category();
         category.setTitle(fakeStoreProductDto.getCategory());
         product.setCategory(category);
+
+        // Store the product in redis, if product not found before
+        redisTemplate.opsForValue().set(String.valueOf(id), product);
 
         return product;
     }
@@ -178,3 +191,6 @@ public class FakeStoreProductService implements ProductService {
 // exchange method is used to perform an HTTP request and receive an HTTP response with full control
 // over request and response details. It allows to specify various parameters such as URL parameters,
 // request method, request entity, expected response type, uri variables.
+
+// opsForValue() :- Method provided by RedisTemplate in Spring Data Redis framework. It returns an instance
+// of valueOperations, which is an interface for working with Redis string values.
