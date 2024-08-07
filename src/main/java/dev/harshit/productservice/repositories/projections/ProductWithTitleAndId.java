@@ -1,6 +1,6 @@
 package dev.harshit.productservice.repositories.projections;
 
-// Something like DTOs except to get date from DB and our app
+// Something like DTOs except to get data from DB and our app
 public interface ProductWithTitleAndId {
     // Put getter method for corresponding attributes
 

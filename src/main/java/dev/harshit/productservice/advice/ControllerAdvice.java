@@ -17,7 +17,14 @@ public class ControllerAdvice {
     }
 }
 
+
+
+
+
+
+
+
 // How to handle Exception Way 2:- Create a class annotated with @ControllerAdvice indicating that
 // it will to provide global advice for controllers
 // @ControllerAdvice is used to define global advice(interceptor) for controllers. It allows to apply
-// the same advice to multiple controllers or globally across all controllers in Spring MVC application
+// the same advice to multiple controllers or globally across all controllers in Spring MVC application.

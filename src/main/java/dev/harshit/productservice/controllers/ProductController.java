@@ -4,6 +4,7 @@ import dev.harshit.productservice.dtos.CreateProductRequestDto;
 import dev.harshit.productservice.dtos.ErrorDto;
 import dev.harshit.productservice.dtos.FakeStoreProductDto;
 import dev.harshit.productservice.dtos.GetCategoryDto;
+import dev.harshit.productservice.exceptions.ProductNotFoundException;
 import dev.harshit.productservice.models.Product;
 import dev.harshit.productservice.services.FakeStoreProductService;
 import dev.harshit.productservice.services.ProductService;
@@ -39,7 +40,7 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts() throws ProductNotFoundException {
         List<Product> responseData = productService.getAllProducts();
 
         // Creating own ResponseEntity of Product, and passing response data and specific status code (202 here)

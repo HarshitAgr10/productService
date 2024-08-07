@@ -44,7 +44,7 @@ public class SelfProductService implements ProductService {
             // categoryFromDatabase = categoryRepository.save(newCategory);
         }
 
-        // If category was found from DB, then no new category will be created
+        // If category found in DB, then no new category will be created
         // If category is not found in the DB, a new category will be created because of cascade persist type
         product.setCategory(categoryFromDatabase);
 
