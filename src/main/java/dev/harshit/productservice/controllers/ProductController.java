@@ -1,9 +1,8 @@
 package dev.harshit.productservice.controllers;
 
-import dev.harshit.productservice.dtos.CreateProductRequestDto;
-import dev.harshit.productservice.dtos.ErrorDto;
-import dev.harshit.productservice.dtos.FakeStoreProductDto;
-import dev.harshit.productservice.dtos.GetCategoryDto;
+import dev.harshit.productservice.commons.AuthenticationCommons;
+import dev.harshit.productservice.dtos.*;
+import dev.harshit.productservice.exceptions.InvalidTokenException;
 import dev.harshit.productservice.exceptions.ProductNotFoundException;
 import dev.harshit.productservice.models.Product;
 import dev.harshit.productservice.services.FakeStoreProductService;
@@ -18,13 +17,16 @@ import java.util.List;
 
 @RestController
 public class ProductController {
+    private AuthenticationCommons authenticationCommons;
 
     // ProductService productService = new FakeStoreProductService();
 
-    ProductService productService;
+    private ProductService productService;
 
-    public ProductController(@Qualifier("fakeStoreService") ProductService productService) {
+    public ProductController(@Qualifier("fakeStoreService") ProductService productService,
+                             AuthenticationCommons authenticationCommons) {
         this.productService = productService;
+        this.authenticationCommons = authenticationCommons;
     }
 
     @PostMapping("/products")
@@ -51,8 +53,16 @@ public class ProductController {
     }
 
     @GetMapping("/products/{id}")
-    public Product getProductById(@PathVariable("id") Long id) {
-        return productService.getSingleProduct(id);
+    public Product getProductById(@PathVariable("id") Long id, @RequestHeader("Authorization") String token)
+            throws InvalidTokenException {
+
+        UserDto userDto = authenticationCommons.validateToken(token);
+        if (userDto == null) {
+            throw new InvalidTokenException("Invalid token");
+        }
+
+        Product product = productService.getSingleProduct(id);
+        return product;
     }
 
 

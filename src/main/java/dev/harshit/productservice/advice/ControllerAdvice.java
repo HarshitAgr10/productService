@@ -1,9 +1,12 @@
 package dev.harshit.productservice.advice;
 
 import dev.harshit.productservice.dtos.ErrorDto;
+import dev.harshit.productservice.exceptions.InvalidTokenException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 
 @org.springframework.web.bind.annotation.ControllerAdvice
 public class ControllerAdvice {
@@ -14,6 +17,15 @@ public class ControllerAdvice {
         errorDto.setMessage("Something went wrong. Please try again");
 
         return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(404));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorDto> handleInvalidTokenException(InvalidTokenException ex) {
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage("Invalid token");
+
+        return new ResponseEntity<>(errorDto, HttpStatusCode.valueOf(401));
+
     }
 }
 
