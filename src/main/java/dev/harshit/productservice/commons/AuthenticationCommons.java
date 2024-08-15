@@ -30,7 +30,7 @@ public class AuthenticationCommons {
 
         // Use exchange method to make the request with headers
         ResponseEntity<UserDto> response = restTemplate.exchange(
-                "http://localhost:8080/users/validate",
+                "http://UserService/users/validate",
                 HttpMethod.POST,
                 entity,
                 UserDto.class
@@ -45,11 +45,15 @@ public class AuthenticationCommons {
 
 
 
-/* HttpHeaders:- Used to represent HTTP request and response headers. It provides a convenient way to
-                 set, get, and manipulate HTTP headers in a Spring application.
+/*
+ * HttpHeaders:
+ * Used to represent HTTP request and response headers.
+ * It provides a convenient way to set, get, and manipulate HTTP headers in a Spring application.
 */
 
-/* HttpEntity:- Represents an HTTP request or response entity, which consists of headers and a body. It is
-                used to pass the request headers and body to a RestTemplate when making HTTP requests, or
-                to represent the HTTP response entity returned from a server.
- */
+/*
+ * HttpEntity:
+ * Represents an HTTP request or response entity, which consists of headers and a body.
+ * Used to pass request headers and body to a RestTemplate when making HTTP requests,
+ * or to represent the HTTP response entity returned from a server.
+*/
